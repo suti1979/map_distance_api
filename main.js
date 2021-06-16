@@ -34,14 +34,14 @@ const Distance = mongoose.model("sarti", distanceSchema)
 
 //clearInterval(timerID) // The setInterval it cleared and doesn't run anymore.
 
-async function doStuff() {
+async function saveData() {
   try {
     const response = await fetch(URL)
     if (response.ok) {
       const data = await response.json()
       console.log(data) //console.log(data.map((user) => user.name)) //data.rows.elements.duration.value
     } else {
-      console.error("faliure")
+      console.error("Something went wrong")
     }
   } catch (err) {
     // if there's no internet or something
@@ -49,4 +49,4 @@ async function doStuff() {
   }
 }
 
-doStuff()
+saveData()
