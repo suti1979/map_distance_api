@@ -26,20 +26,21 @@ const distanceSchema = {
 
 const Distance = mongoose.model("sarti", distanceSchema)
 
-// const timerID = setInterval(() => {
-//   let dummyData = 13725 + Math.floor(Math.random() * 1000)
-//   const duration = new Distance({ time: dummyData })
-//   duration.save().then(() => console.log("meow"))
-// }, 5 * 1000)
+const timerID = setInterval(() => {
+  getData()
+}, 10 * 1000)
 
 //clearInterval(timerID) // The setInterval it cleared and doesn't run anymore.
 
-async function saveData() {
+async function getData() {
   try {
     const response = await fetch(URL)
     if (response.ok) {
       const data = await response.json()
-      console.log(data) //console.log(data.map((user) => user.name)) //data.rows.elements.duration.value
+      let durationTime = data.rows[0].elements[0].duration.value
+      //console.log(durationTime)
+      const duration = new Distance({ time: durationTime })
+      duration.save().then(() => console.log(durationTime))
     } else {
       console.error("Something went wrong")
     }
@@ -48,5 +49,3 @@ async function saveData() {
     console.error(err)
   }
 }
-
-saveData()
