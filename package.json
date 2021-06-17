@@ -5,6 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "dotenv": "^10.0.0",
+    "google-distance-matrix": "^1.1.1",
     "mongoose": "^5.12.13",
     "node-fetch": "^2.6.1"
   },

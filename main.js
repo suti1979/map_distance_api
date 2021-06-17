@@ -1,3 +1,28 @@
+// const test = {
+//   origins: [{ lat: 55.93, lng: -3.118 }, "Greenwich, England"],
+//   destinations: ["Stockholm, Sweden", { lat: 50.087, lng: 14.421 }],
+//   travelMode: "DRIVING",
+//   drivingOptions: {
+//     departureTime: new Date(Date.now()),
+//     trafficModel: "optimistic",
+//   },
+// }
+
+// const origin = "Budapest"
+//   const destination = "Sarti"
+//   const request = {
+//     origins: [origin],
+//     destinations: [destination],
+//     travelMode: google.maps.TravelMode.DRIVING,
+//     unitSystem: google.maps.UnitSystem.METRIC,
+//     avoidHighways: false,
+//     avoidTolls: false,
+//     drivingOptions: {
+//       departureTime: new Date(Date.now()),
+//       trafficModel: "pessimistic",
+//     },
+//   }
+
 require("dotenv").config({ path: "./env/KEY.env" })
 const mongoose = require("mongoose")
 const fetch = require("node-fetch")
@@ -9,7 +34,7 @@ const db_psw = process.env.DB_PSW
 
 const origin = "Budapest"
 const destination = "Sarti"
-const URL = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${google_API}`
+const URL = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&drivingOptions.trafficModel=pessimistic&key=${google_API}`
 
 //database
 
@@ -26,9 +51,9 @@ const distanceSchema = {
 
 const Distance = mongoose.model("sarti", distanceSchema)
 
-const timerID = setInterval(() => {
-  getData()
-}, 10 * 1000)
+// const timerID = setInterval(() => {
+//   getData()
+// }, 10 * 1000)
 
 //clearInterval(timerID) // The setInterval it cleared and doesn't run anymore.
 
@@ -37,10 +62,11 @@ async function getData() {
     const response = await fetch(URL)
     if (response.ok) {
       const data = await response.json()
-      let durationTime = data.rows[0].elements[0].duration.value
+      let durationTime = data.rows[0].elements[0] //.value
       //console.log(durationTime)
       const duration = new Distance({ time: durationTime })
-      duration.save().then(() => console.log(durationTime))
+      console.log(durationTime)
+      //duration.save().then(() => console.log(durationTime))
     } else {
       console.error("Something went wrong")
     }
@@ -49,3 +75,5 @@ async function getData() {
     console.error(err)
   }
 }
+
+getData()
