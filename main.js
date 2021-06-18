@@ -34,7 +34,7 @@ const db_psw = process.env.DB_PSW
 
 const origin = "Budapest"
 const destination = "Sarti"
-const URL = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&drivingOptions.trafficModel=pessimistic&key=${google_API}`
+const URL = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=driving&language=en&departure_time=now&key=${google_API}`
 
 //database
 
@@ -51,9 +51,9 @@ const distanceSchema = {
 
 const Distance = mongoose.model("sarti", distanceSchema)
 
-// const timerID = setInterval(() => {
-//   getData()
-// }, 10 * 1000)
+const timerID = setInterval(() => {
+  getData()
+}, 30 * 60 * 1000)
 
 //clearInterval(timerID) // The setInterval it cleared and doesn't run anymore.
 
@@ -62,11 +62,10 @@ async function getData() {
     const response = await fetch(URL)
     if (response.ok) {
       const data = await response.json()
-      let durationTime = data.rows[0].elements[0] //.value
+      let durationTime = data.rows[0].elements[0].duration_in_traffic.value //.value
       //console.log(durationTime)
       const duration = new Distance({ time: durationTime })
-      console.log(durationTime)
-      //duration.save().then(() => console.log(durationTime))
+      duration.save().then(() => console.log(durationTime))
     } else {
       console.error("Something went wrong")
     }
@@ -76,4 +75,4 @@ async function getData() {
   }
 }
 
-getData()
+//getData()
