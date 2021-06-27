@@ -26,11 +26,11 @@ const distanceSchema = {
   date: { type: Date, default: Date.now },
 }
 
-const Distance = mongoose.model("sarti", distanceSchema)
+const Distance = mongoose.model("sarti_pess", distanceSchema)
 
-// const timerID = setInterval(() => {
-//   getData()
-// }, 30 * 60 * 1000)
+const timerID = setInterval(() => {
+  getData()
+}, 30 * 60 * 1000)
 
 //clearInterval(timerID) // The setInterval it cleared and doesn't run anymore.
 
